@@ -1,5 +1,8 @@
+import configparser
 import subprocess
 import socket
+import time
+import json
 import re
 
 def Ip_Host():
@@ -7,6 +10,11 @@ def Ip_Host():
     Espacio = Ip.find(" ")
     Ip = Ip[0:Espacio]
     return Ip
+
+def configuration():
+    config = configparser.ConfigParser()
+    config.read('JSLP_Conf.ini')
+    return config
 
 def scanNetwork():
 
@@ -18,37 +26,54 @@ def scanNetwork():
 
     return ipList
 
-if __name__ == "__main__":
-    host = Ip_Host()
-    port = 11011
+def socketClient(HOST, PORT, usr, passwd):
+    
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    credentials = f"{{\"User\":\"{usr}\", \"Password\":\"{passwd}\"}}"
+    print(f"MONITOR TO: {ip} --------------------------------")
+    
+    try:
+        sock.connect((ip,PORT))
+        sock.sendall(bytes(credentials, "utf-8"))
+        data = sock.recv(1024)
+        data = data.decode("utf-8") 
 
-    HOST = '192.168.0.13'
+        return data
+
+    except Exception as identifier:
+        print(identifier)
+
+    finally:
+        print(f"Close for: {ip}")
+        sock.close()
+
+def writeJsonScann(dict):
+    
+    with open("JSLP_ScannerData.json","w+") as f:
+        json.dump(dict, f, indent=4)
+
+if __name__ == "__main__":
+
+    conf  = configuration()
+
+    monitor = int(conf['JSLP']['monitorTime'])
+    userP = conf['JSLP']['user']
+    passP = "QUEer12#$"
     PORT = 11011
 
+    while True:
 
-    #with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    #    s.connect((HOST, PORT))
-    #    s.sendall(b'{"User":"ironMan2020","Password":"QUEer12#$"}')
-    #    data = s.recv(1024) 
-    #    print('Received', repr(data))
+        time.sleep(monitor)
+        scanner = scanNetwork()
+        reportScann = {}
 
-    scanner = scanNetwork()
-    print(scanner)
+        for ip in scanner:
 
-    for ip in scanner:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        
-        print(f"MONITOR TO: {ip} --------------------------------")
-        
-        try:
-            sock.connect((ip,PORT))
-            sock.sendall(b'{"User":"ironMan2020","Password":"QUEer12#$"}')
-            data = sock.recv(1024) 
-            print('Received', repr(data))
-        except Exception as identifier:
-            print(identifier)
-        finally:
-            sock.close()
-        
-        
-        
+            report = socketClient(ip, PORT, userP, passP)
+
+            if report is not None:
+                report = json.loads(report)
+                reportScann.update({ip:report})
+
+        writeJsonScann(reportScann)

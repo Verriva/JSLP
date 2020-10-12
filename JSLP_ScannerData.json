@@ -1,0 +1,40 @@
+{
+    "192.168.0.12": {
+        "ServerIP": "192.168.0.12",
+        "ServerName": "Servidor Principal",
+        "TimeStamp": "2020-10-12 02:06:39.834301",
+        "Services": [
+            {
+                "ServiceName": "Data Base",
+                "ServicePort": 1180,
+                "ServiceStatus": "ACTIVE",
+                "ServiceDescrption": "Servidor de Base Datos MariaDB"
+            },
+            {
+                "ServiceName": "SAC",
+                "ServicePort": 1350,
+                "ServiceStatus": "STOP",
+                "ServiceDescrption": "Service Access Control Program"
+            }
+        ]
+    },
+    "192.168.0.13": {
+        "ServerIP": "192.168.0.13",
+        "ServerName": "Data Base",
+        "TimeStamp": "2020-10-12 02:06:39.858762",
+        "Services": [
+            {
+                "ServiceName": "Data Base",
+                "ServicePort": 1180,
+                "ServiceStatus": "ACTIVE",
+                "ServiceDescrption": "Servidor de Base Datos MariaDB"
+            },
+            {
+                "ServiceName": "SAC",
+                "ServicePort": 1350,
+                "ServiceStatus": "STOP",
+                "ServiceDescrption": "Service Access Control Program"
+            }
+        ]
+    }
+}
