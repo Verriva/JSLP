@@ -1,0 +1,124 @@
+#!/bin/bash
+
+# Colors :3
+NC='\033[0m'       # Text Reset
+# Regular Colors
+Black='\033[0;30m'        # Black
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+Blue='\033[0;34m'         # Blue
+Purple='\033[0;35m'       # Purple
+Cyan='\033[0;36m'         # Cyan
+White='\033[0;37m'        # White
+
+hello()
+{
+    echo "Hello World!"
+}
+
+serverName()
+{
+    output=$(cat JSLP_ServerConf.json | jq -r 'to_entries|map("\(.key) = \(.value|tostring)")|.[1]')
+    echo "$output"
+}
+
+listServices()
+{
+    output=$(cat JSLP_ServerConf.json | jq -r '["NAME","PORT","STATUS","DESCRIPTION"], (.Services | .[] | [.ServiceName, .ServicePort, .ServiceStatus, .ServiceDescription]) | @csv' | tr -d '"' | column -t -s,)
+    echo "$output"
+}
+
+listServers()
+{
+    output=$(cat JSLP_ScannerData.json | jq -r '.[] | [.ServerIP, .ServerName, .TimeStamp] | @csv' | tr -d '"' | column -t -s,)
+    echo "$output"
+}
+
+serverConf()
+{
+    output=$(cat JSLP_ServerConf.json | jq -r 'to_entries|map("\(.key) = \(.value|tostring)")|.[:3]|.[]')
+    echo "$output"
+}
+
+listAll()
+{
+    output=$(cat JSLP_ScannerData.json | jq -r '')
+    echo "$output"
+}
+
+serverMont()
+{
+    output=$(grep monitorTime JSLP_Conf.ini)
+    echo "$output seconds"
+}
+
+help()
+{
+    echo -e "${Green}
+                               ██╗███████╗██╗     ██████╗ 
+                               ██║██╔════╝██║     ██╔══██╗
+                               ██║███████╗██║     ██████╔╝
+                          ██   ██║╚════██║██║     ██╔═══╝ 
+                          ╚█████╔╝███████║███████╗██║     
+                           ╚════╝ ╚══════╝╚══════╝╚═╝${NC}
+
+                        ${Yellow}Josue's Service Location Protocol${NC}
+                                ${Yellow} Version Beta 1.0${NC}
+
+                A software by: Josue Tonatiuh Echeverria Vargas \n\n"
+
+echo "Usage: jslp [OPTION]
+
+    -rs,    --runServer         Run the jslp server
+    -rc,    --runClient         Run the jslp client
+    -ss,    --stopServer        Stop the jslp server
+    -sc,    --stopClient        Stop the jslp client
+    -scf    --serverConf        Shows the jslp server configuration
+    -snm    --serverName        Shows the server name
+    -smt    --serverMont        Shows the server monitoring time
+    -ls     --listServices      Shows a list of services for the current server
+    -as     --addService        Adds a new service in the current server
+    -lss    --listSevers        Shows a list of all the servers
+    -lal    --listAll           Shows a list of all the servers & services
+    -h      --help              Shows the help, that one that you're reading right now
+"
+
+    
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -rs | --runServer )     shift
+                                echo "Run Server"
+                                ;;
+        -rc | --runClient )     echo "Run Client"
+                                ;;
+        -ss | --stopServer )    echo "Stop Server"
+                                ;;
+        -sc | --stopClient )    echo "Stop Client"
+                                ;;
+        -scf | --serverConf )   serverConf
+                                ;;
+        -snm | --serverName )   serverName
+                                ;;
+        -smt | --serverMont )   serverMont
+                                ;;
+        -ls | --listServices )  listServices
+                                ;;
+        -as | --addServices )   echo "Add a Service"
+                                ;;
+        -lss | --listServers )  listServers
+                                ;;
+        -lal | --listAll )      echo -e "Not Available in this version. Get the JSON instead..."
+                                listAll
+                                ;;
+        -h | --help )           help
+                                exit
+                                ;;
+        * )                     echo "help"
+                                exit 1
+    esac
+    shift
+done
+

@@ -7,13 +7,13 @@
           "ServiceName":"Data Base",
           "ServicePort":1180,
           "ServiceStatus":"ACTIVE",
-          "ServiceDescrption":"Servidor de Base Datos MariaDB"
+          "ServiceDescription":"Servidor de Base Datos MariaDB"
        },
        {
           "ServiceName":"SAC",
           "ServicePort":1350,
           "ServiceStatus":"STOP",
-          "ServiceDescrption":"Service Access Control Program"
+          "ServiceDescription":"Service Access Control Program"
        }
     ]
  }

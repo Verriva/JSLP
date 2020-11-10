@@ -7,7 +7,7 @@ import json
 
 def configuration():
     config = configparser.ConfigParser()
-    config.read('JSLP_Conf.ini')
+    config.read('/etc/jslp/JSLP_Conf.ini')
     return config
 
 def Ip_Host():
@@ -18,7 +18,7 @@ def Ip_Host():
 
 def jsonReadUpdate():
 
-    with open('JSLP_ServerConf.json','r+') as f:
+    with open('/etc/jslp/JSLP_ServerConf.json','r+') as f:
         data = json.load(f)
         data['ServerIP'] = Ip_Host()
         data['TimeStamp'] = str(datetime.now())
@@ -41,7 +41,6 @@ def validatePassword(request):
     passP = conf['JSLP']['pass']
 
     return True if (user==userP and passw==passP) else False
-
 
 
 def encrypt_string(hash_string):

@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
         time.sleep(monitor)
         scanner = scanNetwork()
-        reportScann = {}
+        reportScann = []
 
         for ip in scanner:
 
@@ -74,6 +74,6 @@ if __name__ == "__main__":
 
             if report is not None:
                 report = json.loads(report)
-                reportScann.update({ip:report})
+                reportScann.append(report)
 
         writeJsonScann(reportScann)

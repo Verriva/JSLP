@@ -1,0 +1,50 @@
+#!/bin/bash
+#_mydir="$(pwd)"
+SERVICE_NAME=TestingService
+PATH_TO_SERVICE=/home/joshua/Projects/JSLP/test.py
+PID_PATH_NAME=/tmp/Test-pid
+
+case $1 in
+    start)
+        echo "Starting"
+        if [ ! -f $PID_PATH_NAME ]; then
+            echo $PATH_TO_SERVICE
+            nohup python3 $PATH_TO_SERVICE &
+            echo $! > $PID_PATH_NAME
+
+            PID=$(cat $PID_PATH_NAME);
+            echo "$SERVICE_NAME is started, PID: $PID_PATH_NAME, $PID"
+        else
+            PID=$(cat $PID_PATH_NAME);
+            echo "$SERVICE_NAME is already running, PID: $PID_PATH_NAME, $PID"
+        fi
+    ;;
+    stop)
+        echo "Stopping"
+        if [ -f $PID_PATH_NAME ]; then
+            PID=$(cat $PID_PATH_NAME);
+            echo "Stopping the PID: $PID"
+            kill -9 $PID;
+            echo "$SERVICE_NAME is stopped"
+            rm $PID_PATH_NAME
+
+        else
+            echo "$SERVICE_NAME is not running"
+        fi
+    ;;
+    restart)
+        echo "Restarting"
+        $0 stop
+        $0 start
+    ;;
+    status)
+        if [ -f $PID_PATH_NAME ]; then
+            PID=$(cat $PID_PATH_NAME);
+            echo "The PID is: $PID"
+
+        else
+            echo "$SERVICE_NAME is not running"
+        fi
+    ;;
+    
+esac

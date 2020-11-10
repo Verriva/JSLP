@@ -1,8 +1,8 @@
-{
-    "192.168.0.12": {
-        "ServerIP": "192.168.0.12",
-        "ServerName": "Servidor Principal",
-        "TimeStamp": "2020-10-12 02:06:39.834301",
+[
+    {
+        "ServerIP": "192.168.0.7",
+        "ServerName": "Data Base",
+        "TimeStamp": "2020-11-10 17:42:57.629018",
         "Services": [
             {
                 "ServiceName": "Data Base",
@@ -18,10 +18,10 @@
             }
         ]
     },
-    "192.168.0.13": {
-        "ServerIP": "192.168.0.13",
-        "ServerName": "Data Base",
-        "TimeStamp": "2020-10-12 02:06:39.858762",
+    {
+        "ServerIP": "192.168.0.9",
+        "ServerName": "Servidor Principal",
+        "TimeStamp": "2020-11-10 17:42:57.701114",
         "Services": [
             {
                 "ServiceName": "Data Base",
@@ -37,4 +37,4 @@
             }
         ]
     }
-}
+]
